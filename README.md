@@ -1,4 +1,6 @@
-### LaTeX + Git + Travis &rightarrow; release pdf
+# git travis pdflatex
+
+Automatic pdflatex complie and release by following the option TeX Live wiht pdflatex: https://github.com/PHPirates/travis-ci-latex-pdf
 
 
 ## 4. TeX Live with pdflatex/lualatex/latexmk/xelatex/texliveonfly/etc
@@ -17,8 +19,6 @@ Thanks to [Joseph Wright](https://tex.stackexchange.com/users/73/joseph-wright) 
 
 Build time example file: 1-2 minutes
 
-Want this? Instructions [below](#pdflatex).
-
 ## <a name="pdflatex">Instructions for building with pdflatex/lualatex/latexmk/xelatex/texliveonfly/etc and TeX Live</a>
 
 If for some reason you prefer the pdflatex (or any other) engine with the TeX Live distribution, read on.
@@ -30,10 +30,13 @@ This repo contains:
 - A Travis configuration file
 - Demonstration LaTeX files in `src/`
 
-### Instructions
-
+### First time setup
 * Install the Travis GitHub App by going to the [Marketplace](https://github.com/marketplace/travis-ci), scroll down, select Open Source (also when you want to use private repos) and select 'Install it for free', then 'Complete order and begin installation'. 
- * Now you should be in Personal settings | Applications | Travis CI | Configure and you can allow access to repositories, either select repos or all repos.
+* Now you should be in Personal settings | Applications | Travis CI | Configure and you can allow access to repositories, either select repos or all repos.
+
+
+### For every new project
+
 * Copy the files in the folder [`4-texlive`](4-texlive) to your repo, so `.travis.yml` and the `texlive/` folder.
 * Specify the right tex file in the `.travis.yml` under the `script` section. Possibly you also need to change the folder in `before_script` if not using `src/`.
 * Commit and push, you can view your repositories at [travis-ci.com](https://travis-ci.com/).
@@ -85,28 +88,36 @@ You can do the following to use them on Travis:
     * Make sure to compile with lualatex or xelatex, for example if you previously had `texliveonfly main.tex` and `latexmk -pdf main.tex` in your `.travis.yml`, then change them to `texliveonfly main.tex --compiler=lualatex` and `latexmk -pdflua main.tex`.
 
 
-## <a name="deploy">To automatically deploy pdfs to GitHub release</a>
+
+## To automatically deploy pdfs to GitHub release</a>
 ### First time setup
 
-We will add a configuration to the `.travis.yml` such that a pdf will be automatically uploaded to GitHub releases when you tag a commit, also see the [Travis documentation](https://docs.travis-ci.com/user/deployment/releases/).
 
-* We will generate a GitHub OAuth key so Travis can push to your releases, with the important difference (compared to just gettting it via GitHub settings) that it's encryped so you can push it safely.
-* (Windows) [Download ruby](https://rubyinstaller.org/downloads/) and at at end of the installation make sure to install MSYS including development kit.
-* Run `gem install travis --no-document` to install the Travis Command-line Tool.
+* (Mac) Run `brew install travis` to install the Travis Command-line Tool.
 
 ### For every new project
-* Go to the directory of your repository, open the command prompt (Windows: <kbd>SHIFT</kbd>+<kbd>F10</kbd> <kbd>W</kbd> <kbd>ENTER</kbd>) and run `travis login --pro --github-token mytoken` where `mytoken` is a token from https://github.com/settings/tokens (or leave the `--github-token` flag out if you want to use your password). 
+* Run `travis login --pro --github-token mytoken` where `mytoken` is a token from https://github.com/settings/tokens (or leave the `--github-token` flag out if you want to use your password). 
 * Run `travis setup releases --pro` and leave File to Upload empty.
-* Replace everything below your encryped api key with (changing the path to your pdf file, probably the same folder as your tex file is in)
+* The above step updates `.travis.yml`. Replace everything below your encryped api key with
 
 ```yml
   file: 
-  - ./src/nameofmytexfile.pdf
-  - ./otherfile.pdf
+  - "./main.pdf"
   skip_cleanup: true
   on:
+    repo: fdcl-gwu/***
     tags: true
     branch: master
 ```
-* Commit and push.
-* If you are ready to release, just tag and push.
+* The name and the location of `main.pdf` above can be updated. 
+
+
+### How to use and deploy
+* Commit and push as usual
+* If you are ready to release a particular commit with the generated `pdf`, checkout, tag, and push the tag. For example,
+
+```
+   git tag v0.01
+   git push origin v0.01
+```
+* The `main.pdf` should be avaialble at the release section of your repository at Github.
