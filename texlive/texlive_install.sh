@@ -29,9 +29,11 @@ tlmgr install $(sed 's/\s*#.*//;/^\s*$/d' texlive/texlive_packages)
 # Keep no backups (not required, simply makes cache bigger)
 tlmgr option -- autobackup 0
 
-# added by TL: install epstopdf and GS
+# added by TL: install epstopdf 
 tlmgr install epstopdf
-tlmgr install ghostscript
 
 # Update the TL install but add nothing new
 tlmgr update --self --all --no-auto-install
+
+# TL: install ghostscript
+sudo apt-get install -y ghostscript
