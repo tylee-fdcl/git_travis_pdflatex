@@ -37,3 +37,4 @@ tlmgr update --self --all --no-auto-install
 
 # TL: install ghostscript
 sudo apt-get install -y ghostscript
+sudo apt install --fix-broken
