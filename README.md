@@ -93,10 +93,12 @@ We will add a configuration to the `.travis.yml` such that a pdf will be automat
 * We will generate a GitHub OAuth key so Travis can push to your releases, with the important difference (compared to just gettting it via GitHub settings) that it's encryped so you can push it safely.
 * (Windows) [Download ruby](https://rubyinstaller.org/downloads/) and at at end of the installation make sure to install MSYS including development kit.
 * Run `gem install travis --no-document` to install the Travis Command-line Tool.
+
 ### For every new project
 * Go to the directory of your repository, open the command prompt (Windows: <kbd>SHIFT</kbd>+<kbd>F10</kbd> <kbd>W</kbd> <kbd>ENTER</kbd>) and run `travis login --pro --github-token mytoken` where `mytoken` is a token from https://github.com/settings/tokens (or leave the `--github-token` flag out if you want to use your password). 
 * Run `travis setup releases --pro` and leave File to Upload empty.
 * Replace everything below your encryped api key with (changing the path to your pdf file, probably the same folder as your tex file is in)
+
 ```yml
   file: 
   - ./src/nameofmytexfile.pdf
